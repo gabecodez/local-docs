@@ -1,0 +1,11 @@
+node_modules/
+dist/
+src/**/*.js
+src/**/*.js.map
+client/dist/
+electron/dist/
+data/
+release/
+.env
+*.log
+.DS_Store

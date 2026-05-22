@@ -1,0 +1,89 @@
+{
+  "name": "local-docs",
+  "version": "1.0.0",
+  "description": "Local-first document editor with rich text, autosave, and DOCX/PDF export",
+  "license": "MIT",
+  "author": "gabecodez",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gabecodez/local-docs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gabecodez/local-docs/issues"
+  },
+  "homepage": "https://github.com/gabecodez/local-docs#readme",
+  "keywords": [
+    "document-editor",
+    "rich-text",
+    "tiptap",
+    "electron",
+    "local-first",
+    "docx",
+    "pdf"
+  ],
+  "type": "module",
+  "main": "electron/dist/main.js",
+  "workspaces": [
+    "client"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace client && tsc && tsc -p electron/tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "concurrently -k \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "tsx watch src/index.ts",
+    "dev:client": "npm run dev --workspace client",
+    "dev:electron": "concurrently -k \"npm run dev:client\" \"npm run dev:electron:runner\"",
+    "dev:server:electron": "cross-env PORT=3847 tsx watch src/index.ts",
+    "dev:electron:runner": "wait-on http://127.0.0.1:5173 && tsc && tsc -p electron/tsconfig.json && cross-env NODE_ENV=development electron .",
+    "start:electron": "electron .",
+    "dist": "npm run build && electron-builder",
+    "typecheck": "tsc --noEmit && tsc -p electron/tsconfig.json --noEmit && npm run typecheck --workspace client"
+  },
+  "build": {
+    "appId": "com.localdocs.app",
+    "productName": "Local Docs",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "client/dist/**/*",
+      "electron/dist/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.1.0",
+    "zod": "^3.25.28"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.21",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^36.3.2",
+    "electron-builder": "^26.0.12",
+    "tsx": "^4.19.4",
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3"
+  }
+}
