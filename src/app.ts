@@ -48,7 +48,7 @@ export function createApp() {
   if (env.NODE_ENV === "production") {
     app.use(express.static(clientDistPath));
 
-    app.get("*", (_req, res, next) => {
+    app.get(/.*/, (_req, res, next) => {
       if (_req.path.startsWith("/api/")) {
         next();
         return;
